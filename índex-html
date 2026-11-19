@@ -1,1 +1,244 @@
+package QualquerProjeto2;
 
+import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class CalculadoraLuisGustavo {
+
+    private JFrame frmLuisGustavo;
+    private JTextField JTFResultado;
+
+    private double valor1;
+    private String op;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    CalculadoraLuisGustavo window =
+                        new CalculadoraLuisGustavo();
+                    window.frmLuisGustavo.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public CalculadoraLuisGustavo() {
+        initialize();
+    }
+
+    // MÉTODOS DA CALCULADORA
+
+    public double adicao(double a, double b) {
+        return a + b;
+    }
+
+    public double subtracao(double a, double b) {
+        return a - b;
+    }
+
+    public double multiplicacao(double a, double b) {
+        return a * b;
+    }
+
+    public double divisao(double a, double b) {
+        if (b == 0) {
+            throw new ArithmeticException("Divisão por zero!");
+        }
+        return a / b;
+    }
+
+    public double potencia(double a, double b) {
+        return Math.pow(a, b);
+    }
+
+    private void escolherOperacao(String operacao) {
+        try {
+            valor1 = Double.parseDouble(JTFResultado.getText());
+            op = operacao;
+            JTFResultado.setText("");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(frmLuisGustavo,
+                "Digite um número primeiro!");
+        }
+    }
+
+    private void adicionarNumero(String numero) {
+        JTFResultado.setText(
+            JTFResultado.getText() + numero
+        );
+    }
+
+    private void calcular() {
+        try {
+            double valor2 =
+                Double.parseDouble(JTFResultado.getText());
+
+            double resultado = 0;
+
+            switch (op) {
+                case "soma":
+                    resultado = adicao(valor1, valor2);
+                    break;
+
+                case "subtracao":
+                    resultado = subtracao(valor1, valor2);
+                    break;
+
+                case "multiplicacao":
+                    resultado = multiplicacao(valor1, valor2);
+                    break;
+
+                case "divisao":
+                    resultado = divisao(valor1, valor2);
+                    break;
+
+                case "potencia":
+                    resultado = potencia(valor1, valor2);
+                    break;
+
+                default:
+                    return;
+            }
+
+            JTFResultado.setText(String.valueOf(resultado));
+
+        } catch (ArithmeticException e) {
+            JOptionPane.showMessageDialog(frmLuisGustavo,
+                e.getMessage());
+            JTFResultado.setText("0");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(frmLuisGustavo,
+                "Digite o segundo número!");
+        }
+    }
+
+    private void initialize() {
+
+        frmLuisGustavo = new JFrame();
+
+        frmLuisGustavo.setTitle(
+            "LuisGustavoCroner - RA 0023948"
+        );
+
+        frmLuisGustavo.getContentPane()
+            .setBackground(new Color(192, 192, 192));
+
+        frmLuisGustavo.getContentPane().setLayout(null);
+
+        JTFResultado = new JTextField("0");
+        JTFResultado.setFont(
+            new Font("Arial Black", Font.PLAIN, 35)
+        );
+        JTFResultado.setBounds(10, 30, 439, 73);
+        frmLuisGustavo.getContentPane().add(JTFResultado);
+
+        String[] numeros = {
+            "7", "8", "9",
+            "4", "5", "6",
+            "1", "2", "3",
+            "0"
+        };
+
+        int[][] posicoes = {
+            {10, 193}, {104, 193}, {201, 193},
+            {10, 268}, {104, 268}, {201, 268},
+            {10, 341}, {104, 341}, {201, 341},
+            {104, 427}
+        };
+
+        for (int i = 0; i < numeros.length; i++) {
+            JButton btn = new JButton(numeros[i]);
+
+            btn.setFont(new Font("Tahoma", Font.PLAIN, 40));
+
+            btn.setBounds(
+                posicoes[i][0],
+                posicoes[i][1],
+                72, 64
+            );
+
+            String numero = numeros[i];
+
+            btn.addActionListener(e ->
+                adicionarNumero(numero)
+            );
+
+            frmLuisGustavo.getContentPane().add(btn);
+        }
+
+        JButton btnC = new JButton("C");
+        btnC.setFont(new Font("Tahoma", Font.PLAIN, 40));
+        btnC.setBounds(10, 114, 72, 64);
+        btnC.addActionListener(e -> {
+            JTFResultado.setText("0");
+            valor1 = 0;
+            op = null;
+        });
+        frmLuisGustavo.getContentPane().add(btnC);
+
+        JButton btnDivisao = new JButton("/");
+        JButton btnMultiplicacao = new JButton("*");
+        JButton btnSubtracao = new JButton("-");
+        JButton btnSoma = new JButton("+");
+        JButton btnPotencia = new JButton("^");
+        JButton btnIgual = new JButton("=");
+
+        JButton[] botoes = {
+            btnDivisao, btnMultiplicacao,
+            btnSubtracao, btnSoma, btnPotencia,
+            btnIgual
+        };
+
+        String[] operacoes = {
+            "divisao", "multiplicacao",
+            "subtracao", "soma", "potencia"
+        };
+
+        int[][] posOperacoes = {
+            {364, 114}, {364, 193},
+            {364, 268}, {364, 341},
+            {272, 193}, {364, 427}
+        };
+
+        for (int i = 0; i < botoes.length; i++) {
+
+            JButton btn = botoes[i];
+
+            btn.setFont(new Font("Tahoma", Font.PLAIN, 40));
+
+            btn.setBounds(
+                posOperacoes[i][0],
+                posOperacoes[i][1],
+                72, 64
+            );
+
+            if (i < 5) {
+                String operacao = operacoes[i];
+
+                btn.addActionListener(e ->
+                    escolherOperacao(operacao)
+                );
+            } else {
+                btn.addActionListener(e -> calcular());
+            }
+
+            frmLuisGustavo.getContentPane().add(btn);
+        }
+
+        frmLuisGustavo.setBounds(100, 100, 475, 565);
+        frmLuisGustavo.setDefaultCloseOperation(
+            JFrame.EXIT_ON_CLOSE
+        );
+    }
+}
